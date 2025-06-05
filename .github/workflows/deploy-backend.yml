@@ -6,7 +6,7 @@ on:
       - test
       - prod
     paths:
-      - 'backend/**'
+      - 'back-end/**'
 
 jobs:
   deploy:
