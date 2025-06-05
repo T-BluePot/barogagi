@@ -32,7 +32,7 @@ jobs:
           fi
 
       - name: Build jar file
-        working-directory: ./backend
+        working-directory: ./back-end
         run: |
           chmod +x ./gradlew
           ./gradlew clean build
@@ -40,8 +40,8 @@ jobs:
       - name: SCP jar and Dockerfile to EC2
         run: |
           scp -i key.pem -o StrictHostKeyChecking=no \
-            ./backend/build/libs/*.jar \
-            ./backend/Dockerfile \
+            ./back-end/build/libs/*.jar \
+            ./back-end/Dockerfile \
             ${{ secrets.USERNAME }}@${{ env.HOST }}:${{ env.TARGET_DIR }}
 
       - name: SSH into EC2 and run Docker
