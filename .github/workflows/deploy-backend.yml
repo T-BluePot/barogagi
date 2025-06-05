@@ -1,0 +1,55 @@
+name: Deploy Backend to EC2 (Test / Prod)
+
+on:
+  push:
+    branches:
+      - test
+      - prod
+    paths:
+      - 'backend/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH key
+        run: |
+          echo "${{ secrets.PRIVATE_KEY }}" > key.pem
+          chmod 600 key.pem
+
+      - name: Set Environment Variables (Test / Prod)
+        run: |
+          if [[ "${GITHUB_REF##*/}" == "prod" ]]; then
+            echo "HOST=${{ secrets.PROD_HOST }}" >> $GITHUB_ENV
+            echo "TARGET_DIR=${{ secrets.PROD_TARGET_DIR }}" >> $GITHUB_ENV
+          else
+            echo "HOST=${{ secrets.TEST_HOST }}" >> $GITHUB_ENV
+            echo "TARGET_DIR=${{ secrets.TEST_TARGET_DIR }}" >> $GITHUB_ENV
+          fi
+
+      - name: Build jar file
+        working-directory: ./backend
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean build
+
+      - name: SCP jar and Dockerfile to EC2
+        run: |
+          scp -i key.pem -o StrictHostKeyChecking=no \
+            ./backend/build/libs/*.jar \
+            ./backend/Dockerfile \
+            ${{ secrets.USERNAME }}@${{ env.HOST }}:${{ env.TARGET_DIR }}
+
+      - name: SSH into EC2 and run Docker
+        run: |
+          ssh -o ServerAliveInterval=30 -i key.pem -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ env.HOST }} << EOF
+            cd $TARGET_DIR
+            sudo docker stop backend || true
+            sudo docker rm backend || true
+            sudo docker build -t backend .
+            sudo docker run -d -p 8080:8080 --name backend backend
+          EOF

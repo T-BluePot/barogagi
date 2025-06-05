@@ -1,0 +1,9 @@
+# docker-compose.yml
+version: "3"
+services:
+  backend:
+    build: ./backend
+    container_name: barogagi_backend
+    ports:
+      - "8080:8080"
+    restart: always
