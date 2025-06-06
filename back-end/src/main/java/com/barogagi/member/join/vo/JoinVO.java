@@ -25,13 +25,4 @@ public class JoinVO extends DefailtVO {
 
     // 성별 (M : 남 / W : 여)
     private String gender = "";
-
-    // 서비스 이용약관 동의 여부(필수) (Y : 동의 /  N : 비동의)
-    private String serviceTermAgreeYn = "";
-
-    // 개인정보 수집 및 이용 동의(필수) (Y : 동의 / N : 비동의)
-    private String personalInfoAgreeYn = "";
-
-    // 마케팅 정보 수신 동의(선택) (Y : 동의 / N : 비동의)
-    private String marketingAgreeYn = "";
 }
