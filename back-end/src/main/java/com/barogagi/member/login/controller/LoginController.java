@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Tag(name = "로그인", description = "로그인 관련 API")
+@Tag(name = "일반 로그인", description = "일반 로그인 관련 API")
 @RestController
 @RequestMapping("/login")
 public class LoginController {
