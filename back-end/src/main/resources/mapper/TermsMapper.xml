@@ -16,4 +16,11 @@
             ORDER BY SORT ASC;
         ]]>
     </select>
+
+    <insert id="insertTermsAgreeInfo" parameterType="com.barogagi.terms.vo.TermsVO">
+        <![CDATA[
+            INSERT INTO TERMS_AGREE(TERMS_NUM, MEMBERSHIP_NO, AGREE_YN)
+                VALUES(#{termsNum}, #{membershipNo}, #{agreeYn})
+        ]]>
+    </insert>
 </mapper>
