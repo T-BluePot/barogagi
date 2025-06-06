@@ -89,7 +89,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.2.1</version> <!-- Spring Boot 버전에 맞게 -->
+                <version>3.2.1</version>
                 <configuration>
                     <mainClass>com.Application</mainClass>
                 </configuration>
