@@ -26,4 +26,12 @@
             WHERE   USER_ID = #{userId}
         ]]>
     </update>
+
+    <select id="findMembershipNo" parameterType="com.barogagi.member.login.vo.LoginVO" resultType="com.barogagi.member.login.vo.LoginVO">
+        <![CDATA[
+            SELECT  MEMBERSHIP_NO membershipNo
+            FROM    USER_MEMBERSHIP_INFO
+            WHERE   USER_ID = #{userId}
+        ]]>
+    </select>
 </mapper>

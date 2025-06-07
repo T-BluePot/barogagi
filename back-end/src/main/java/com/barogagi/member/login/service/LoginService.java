@@ -28,4 +28,8 @@ public class LoginService {
     public int updatePassword(LoginVO vo){
         return loginMapper.updatePassword(vo);
     }
+
+    public LoginVO findMembershipNo(LoginVO vo) {
+        return loginMapper.findMembershipNo(vo);
+    }
 }
