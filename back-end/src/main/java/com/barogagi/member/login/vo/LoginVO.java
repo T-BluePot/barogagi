@@ -11,4 +11,6 @@ public class LoginVO extends DefailtVO {
     private String userId = "";
     private String password = "";
     private String tel = "";
+
+    private String membershipNo = "";
 }
