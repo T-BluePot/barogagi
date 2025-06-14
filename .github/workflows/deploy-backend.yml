@@ -34,13 +34,12 @@ jobs:
       - name: Build jar file
         working-directory: ./back-end
         run: |
-          chmod +x ./gradlew
-          ./gradlew clean build
+          mvn clean package -DskipTests
 
       - name: SCP jar and Dockerfile to EC2
         run: |
           scp -i key.pem -o StrictHostKeyChecking=no \
-            ./back-end/build/libs/*.jar \
+            ./back-end/target/*.jar \
             ./back-end/Dockerfile \
             ${{ secrets.USERNAME }}@${{ env.HOST }}:${{ env.TARGET_DIR }}
 
