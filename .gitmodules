@@ -1,0 +1,7 @@
+[submodule "front-end"]
+	path = barogagi-front
+	url = https://github.com/T-BluePot/barogagi-front.git
+
+[submodule "back-end"]
+	path = barogagi-back
+	url = https://github.com/T-BluePot/barogagi-back.git
