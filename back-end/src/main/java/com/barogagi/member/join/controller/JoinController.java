@@ -104,47 +104,37 @@ public class JoinController {
 
             if(joinVO.getApiSecretKey().equals(API_SECRET_KEY)){
 
-                // 약관 동의 여부 확인
-                /*
-                서비스 이용약관(필수), 개인정보 수집 및 이용(필수), 마케팅 정보 수신(선택)
-                 */
-                if(joinVO.getServiceTermAgreeYn().equals("Y") && joinVO.getPersonalInfoAgreeYn().equals("Y")
-                        && (joinVO.getMarketingAgreeYn().equals("Y") || joinVO.getMarketingAgreeYn().equals("N"))){
+                // 필수 입력값(아이디, 비밀번호, 휴대전화번호 값이 빈 값이 아닌지 확인)
+                // 선택 입력값(이메일, 생년월일, 성별)
+                if(inputValidate.isEmpty(joinVO.getUserId()) || inputValidate.isEmpty(joinVO.getPassword()) || inputValidate.isEmpty(joinVO.getTel())){
 
-                    // 필수 입력값(아이디, 비밀번호, 생년월일, 휴대전화번호, 성별 값이 빈 값이 아닌지 확인)
-                    // 선택 입력값(이메일)
-                    if(inputValidate.isEmpty(joinVO.getUserId()) || inputValidate.isEmpty(joinVO.getPassword())
-                            || inputValidate.isEmpty(joinVO.getEmail()) || inputValidate.isEmpty(joinVO.getBirth())
-                            || inputValidate.isEmpty(joinVO.getTel()) || inputValidate.isEmpty(joinVO.getGender())){
+                    // 필수 입력값 중 빈 값이 존재. insert 중지
+                    resultCode = "101";
+                    message = "회원가입에 필요한 정보를 입력해주세요.";
 
-                        // 필수 입력값 중 빈 값이 존재. insert 중지
-                        resultCode = "101";
-                        message = "회원가입에 필요한 정보를 입력해주세요.";
+                } else{
+                    // 입력값 암호화 & 값 세팅
+                    // 휴대전화번호, 비밀번호 암호화
+                    joinVO.setTel(encryptUtil.encrypt(joinVO.getTel()));
 
-                    } else{
-                        // 입력값 암호화 & 값 세팅
-                        // 휴대전화번호, 이메일, 비밀번호 암호화
-                        joinVO.setTel(encryptUtil.encrypt(joinVO.getTel()));
+                    // 이메일 값이 넘어오면 암호화
+                    if(!inputValidate.isEmpty(joinVO.getEmail())){
                         joinVO.setEmail(encryptUtil.encrypt(joinVO.getEmail()));
-
-                        joinVO.setPassword(encryptUtil.hashEncodeString(joinVO.getPassword()));
-
-                        // 회원 정보 저장(회원가입)
-                        int insertResult = joinService.insertMemberInfo(joinVO);
-                        logger.info("@@ insertResult={}", insertResult);
-
-                        if(insertResult > 0){
-                            resultCode = "200";
-                            message = "회원가입에 성공하였습니다.";
-                        } else{
-                            resultCode = "300";
-                            message = "회원가입에 실패하였습니다.";
-                        }
                     }
 
-                } else {
-                    resultCode = "102";
-                    message = "약관에 동의를 해주셔야 회원가입이 가능합니다.";
+                    joinVO.setPassword(encryptUtil.hashEncodeString(joinVO.getPassword()));
+
+                    // 회원 정보 저장(회원가입)
+                    int insertResult = joinService.insertMemberInfo(joinVO);
+                    logger.info("@@ insertResult={}", insertResult);
+
+                    if(insertResult > 0){
+                        resultCode = "200";
+                        message = "회원가입에 성공하였습니다.";
+                    } else{
+                        resultCode = "300";
+                        message = "회원가입에 실패하였습니다.";
+                    }
                 }
 
             } else {
