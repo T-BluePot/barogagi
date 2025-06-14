@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --color-main: #bafd4f;
+  --color-main-dark: #8ed71b;
+  --color-main-disable: #d6ff96;
+  --color-alert-red: #ff3b38;
+}
+
+body {
+  font-family: "Pretendard Variable", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: bold;
+}
+
+p {
+  margin: 0;
+  line-height: 1.5;
+}
